@@ -64,8 +64,21 @@ const Header = () => {
     const navigationHandler = (type) => {
         if (type === "movie") {
             navigate("/explore/movie");
-        } else {
+        }
+        if (type === "favorite") {
+            navigate("/favorite");
+        }
+        if (type === "watched") {
+            navigate("/watched")
+        }
+        if (type === "watchlist") {
             navigate("/watchlist");
+        }
+        if (type === "register"){
+            navigate("/auth/register");
+        }
+        if (type === "signin") {
+            navigate("/auth/signin");
         }
         setMobileMenu(false);
     };
@@ -86,13 +99,13 @@ const Header = () => {
                     {/*TODO change when user register */}
                     <li
                         className="menuItem"
-                        onClick={() => navigationHandler("movie")}
+                        onClick={() => navigationHandler("signin")}
                     >
                         Sign Up
                     </li>
                     <li
                         className="menuItem"
-                        onClick={() => navigationHandler("movie")}
+                        onClick={() => navigationHandler("register")}
                     >
                         Register
                     </li>
@@ -103,6 +116,18 @@ const Header = () => {
                         Watch List
                     </li>
 
+                    <li
+                        className="menuItem"
+                        onClick={()=> navigate("/favorites")}
+                    >
+                        Favorites
+                    </li>
+                    <li
+                        className="menuItem"
+                        onClick={() => {navigationHandler("watched")}}
+                    >
+                        Watched
+                    </li>
 
                     <li className="menuItem">
                         <HiOutlineSearch onClick={openSearch}/>

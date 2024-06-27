@@ -1,0 +1,71 @@
+@import "../../mixins.scss";
+
+.authPage {
+  min-height: 700px;
+  padding-top: 100px;
+
+  .auth-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: var(--black3);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: center;
+    margin-top: 100px; // Agrega margen superior para que el contenido esté más centrado verticalmente
+
+    .auth-title {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .auth-input-group {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+
+        label {
+          margin-bottom: 5px;
+        }
+
+        input {
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          outline: none;
+        }
+      }
+
+      .auth-button {
+        padding: 10px;
+        background-color: #ff6347;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #ff4500;
+        }
+      }
+    }
+
+    .auth-switch {
+      margin-top: 20px;
+
+      a {
+        color: #ff6347;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+  }
+}

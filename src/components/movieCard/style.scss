@@ -5,6 +5,7 @@
   margin-bottom: 25px;
   cursor: pointer;
   flex-shrink: 0;
+  position: relative; // Asegura que los géneros estén posicionados correctamente dentro de la tarjeta
   @include md {
     width: calc(25% - 15px);
   }
@@ -20,7 +21,7 @@
     background-position: center;
     margin-bottom: 30px;
     transition: all ease 0.5s;
-    overflow: hidden; // Asegura que los elementos dentro no se desborden
+    overflow: hidden;
 
     .posterImg {
       display: block;
@@ -28,7 +29,7 @@
       height: 100%;
       object-fit: cover;
       border-radius: 12px;
-      transition: opacity 0.5s ease; // Añadir transición a la opacidad
+      transition: opacity 0.5s ease;
     }
 
     .overlay {
@@ -38,17 +39,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 2; // Asegura que el overlay esté encima de la imagen
-    }
-
-    .genres {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      z-index: 3; // Asegura que los géneros estén encima de la imagen y el overlay
+      z-index: 2;
     }
 
     &:hover {
@@ -69,18 +60,54 @@
     }
   }
 
-  .addButton {
-    padding: 5px 10px;
+  .iconButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
     background-color: #ff6347;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
+    &.active {
+      background-color: grey;
+    }
 
     &:hover {
       background-color: #ff4500;
     }
+
+    &:disabled {
+      background-color: grey;
+      cursor: not-allowed;
+    }
+
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  .genres {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    z-index: 3; // Asegura que los géneros estén encima de la imagen y el overlay
+    pointer-events: none; // Permite que los elementos interactivos subyacentes sean clicables
+  }
+
+  .genre {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
   }
 
   .textBlock {

@@ -23,7 +23,7 @@ const sortbyData = [
     {value: "original_title.asc", label: "Title (A-Z)"},
 ];
 
-const watchList = () => {
+const Favorites = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [genre, setGenre] = useState(null);
@@ -32,8 +32,7 @@ const watchList = () => {
 
     const {data: genresData} = useFetch(`/genre/movie/list`);
 
-    const {watchList} = useContext(GlobalContext);
-    console.log(watchList);
+    const {favorites} = useContext(GlobalContext);
     useEffect(() => {
         filters = {};
         setData(null);
@@ -70,7 +69,7 @@ const watchList = () => {
             <ContentWrapper>
                 <div className="pageHeader">
                     <div className="pageTitle">
-                        Your Movies Watchlist!
+                        Your Favorites!
                     </div>
                     <div className="filters">
                         <Select
@@ -101,7 +100,7 @@ const watchList = () => {
                 {loading && <Spinner initial={true}/>}
                 {!loading && (
                     <>
-                        {watchList.length > 0 ? (
+                        {favorites.length > 0 ? (
                             <InfiniteScroll
                                 className="content"
                                 dataLength={data?.results?.length || []}
@@ -109,7 +108,7 @@ const watchList = () => {
                                 hasMore={null}
                                 loader={<Spinner/>}
                             >
-                                {watchList.map((item) => {
+                                {favorites.map((item) => {
                                     return (
                                         <MovieCard
                                             key={null}
@@ -131,4 +130,4 @@ const watchList = () => {
     );
 }
 
-export default watchList;
+export default Favorites;

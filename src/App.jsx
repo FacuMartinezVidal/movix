@@ -14,6 +14,10 @@ import Explore from "./pages/explore/Explore";
 import PageNotFound from "./pages/404/PageNotFound";
 import WatchList from "./pages/watchList/WatchList.jsx";
 import {GlobalProvider} from "./context/GlobalState.jsx";
+import Favorites from "./pages/favorites/Favorites.jsx";
+import Watched from "./pages/watched/Watched.jsx";
+import Register from "./pages/auth/Register.jsx";
+import SignIn from "./pages/auth/SignIn.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -62,6 +66,10 @@ function App() {
                     <Route path="/explore/:mediaType" element={<Explore/>}/>
                     <Route path="*" element={<PageNotFound/>}/>
                     <Route path="/watchlist" element={<WatchList/>}/>
+                    <Route path="/favorites" element={<Favorites/>}/>
+                    <Route path="/watched" element={<Watched/>}/>
+                    <Route path="/auth/register" element={<Register/>}/>
+                    <Route path="auth/signin" element={<SignIn/>}/>
                 </Routes>
                 <Footer/>
             </BrowserRouter>
