@@ -43,7 +43,7 @@ function App() {
         let promises = [];
         let allGenres = {};
 
-        promises.push(fetchDataFromApi(`/genre/${url}/list`));
+        promises.push(fetchDataFromApi(`/genre/movie/list`));
 
 
         const data = await Promise.all(promises);
