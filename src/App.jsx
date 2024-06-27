@@ -13,6 +13,7 @@ import SearchResult from "./pages/searchResult/SearchResult";
 import Explore from "./pages/explore/Explore";
 import PageNotFound from "./pages/404/PageNotFound";
 import WatchList from "./pages/watchList/WatchList.jsx";
+import {GlobalProvider} from "./context/GlobalState.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -55,18 +56,20 @@ function App() {
     };
 
     return (
-        <BrowserRouter>
-            <Header/>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/:mediaType/:id" element={<Details/>}/>
-                <Route path="/search/:query" element={<SearchResult/>}/>
-                <Route path="/explore/:mediaType" element={<Explore/>}/>
-                <Route path="*" element={<PageNotFound/>}/>
-                <Route path="/watchlist" element={<WatchList/>}/>
-            </Routes>
-            <Footer/>
-        </BrowserRouter>
+        <GlobalProvider>
+            <BrowserRouter>
+                <Header/>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/:mediaType/:id" element={<Details/>}/>
+                    <Route path="/search/:query" element={<SearchResult/>}/>
+                    <Route path="/explore/:mediaType" element={<Explore/>}/>
+                    <Route path="*" element={<PageNotFound/>}/>
+                    <Route path="/watchlist" element={<WatchList/>}/>
+                </Routes>
+                <Footer/>
+            </BrowserRouter>
+        </GlobalProvider>
     );
 }
 
