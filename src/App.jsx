@@ -18,8 +18,6 @@ import {GlobalProvider} from "./context/GlobalState.jsx";
 function App() {
     const dispatch = useDispatch();
     const {url} = useSelector((state) => state.home);
-    console.log(url);
-
     useEffect(() => {
         fetchApiConfig();
         genresCall();
@@ -27,7 +25,6 @@ function App() {
 
     const fetchApiConfig = () => {
         fetchDataFromApi("/configuration").then((res) => {
-            console.log(res);
 
             const url = {
                 backdrop: res.images.secure_base_url + "original",
@@ -47,7 +44,6 @@ function App() {
 
 
         const data = await Promise.all(promises);
-        console.log(data);
         data.map(({genres}) => {
             return genres.map((item) => (allGenres[item.id] = item));
         });

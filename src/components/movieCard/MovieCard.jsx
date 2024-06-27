@@ -10,14 +10,17 @@ import Genres from "../genres/Genres";
 import PosterFallback from "../../assets/no-poster.png";
 import {GlobalContext} from "../../context/GlobalState.jsx";
 
-const MovieCard = ({data, fromSearch, mediaType}) => {
+const MovieCard = ({data, fromSearch}) => {
     const {url} = useSelector((state) => state.home);
     const navigate = useNavigate();
     const posterUrl = data.poster_path
         ? url.poster + data.poster_path
         : PosterFallback;
 
-    const {addMovieToWatchList} = useContext(GlobalContext);
+    const {addMovieToWatchList, watchList} = useContext(GlobalContext);
+
+    let storedMovie = watchList.find((o) => o.id === data.id);
+    const isMovieInWatchList = !!storedMovie;
 
     return (
         <div className="movieCard">
@@ -29,6 +32,7 @@ const MovieCard = ({data, fromSearch, mediaType}) => {
                             <CircleRating rating={data.vote_average.toFixed(1)}/>
                             <button
                                 className="addButton"
+                                disabled={isMovieInWatchList}
                                 onClick={(e) => {
                                     e.stopPropagation(); // Prevents navigation click
                                     addMovieToWatchList(data);
