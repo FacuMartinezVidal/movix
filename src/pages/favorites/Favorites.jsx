@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import useFetch from "../../hooks/useFetch.jsx";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper.jsx";
-import Select from "react-select";
 import Spinner from "../../components/spinner/Spinner.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import MovieCard from "../../components/movieCard/MovieCard.jsx";
@@ -71,31 +70,7 @@ const Favorites = () => {
                     <div className="pageTitle">
                         Your Favorites!
                     </div>
-                    <div className="filters">
-                        <Select
-                            isMulti
-                            name="genres"
-                            value={genre}
-                            closeMenuOnSelect={false}
-                            options={genresData?.genres}
-                            getOptionLabel={(option) => option.name}
-                            getOptionValue={(option) => option.id}
-                            onChange={onChange}
-                            placeholder="Select genres"
-                            className="react-select-container genresDD"
-                            classNamePrefix="react-select"
-                        />
-                        <Select
-                            name="sortby"
-                            value={sortby}
-                            options={sortbyData}
-                            onChange={onChange}
-                            isClearable={true}
-                            placeholder="Sort by"
-                            className="react-select-container sortbyDD"
-                            classNamePrefix="react-select"
-                        />
-                    </div>
+
                 </div>
                 {loading && <Spinner initial={true}/>}
                 {!loading && (
