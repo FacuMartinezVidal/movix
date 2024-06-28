@@ -109,12 +109,11 @@ const Watched = () => {
                                 loader={<Spinner/>}
                             >
                                 {watched.map((item) => {
+                                    const movie = item.movie;
                                     return (
-                                        <MovieCard
-                                            key={null}
-                                            data={item}
-                                            mediaType={mediaType}
-                                        />
+                                        movie && (
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} />
+                                        )
                                     );
                                 })}
                             </InfiniteScroll>

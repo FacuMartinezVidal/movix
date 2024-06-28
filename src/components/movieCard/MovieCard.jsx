@@ -14,9 +14,7 @@ import {GlobalContext} from "../../context/GlobalState.jsx";
 const MovieCard = ({ data, fromSearch }) => {
     const { url } = useSelector((state) => state.home);
     const navigate = useNavigate();
-    const posterUrl = data.poster_path
-        ? url.poster + data.poster_path
-        : PosterFallback;
+    const posterUrl = data.poster_path ? url.poster + data.poster_path : PosterFallback;
 
     const {
         addMovieToWatchList,
@@ -30,13 +28,13 @@ const MovieCard = ({ data, fromSearch }) => {
         favorites,
     } = useContext(GlobalContext);
 
-    const isMovieInWatchList = !!watchList.find((o) => o.id === data.id);
-    const isMovieWatched = !!watched.find((o) => o.id === data.id);
-    const isMovieInFavorites = !!favorites.find((o) => o.id === data.id);
+    const isMovieInWatchList = !!watchList.find((o) => o.api_id === data.api_id);
+    const isMovieWatched = !!watched.find((o) => o.api_id === data.api_id);
+    const isMovieInFavorites = !!favorites.find((o) => o.api_id === data.api_id);
 
     return (
         <div className="movieCard">
-            <div className="posterBlock" onClick={() => navigate(`/movie/${data.id}`)}>
+            <div className="posterBlock" onClick={() => navigate(`/movie/${data.api_id}`)}>
                 <Img className="posterImg" src={posterUrl} />
                 {!fromSearch && (
                     <>
@@ -46,7 +44,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieInWatchList ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieInWatchList ? removeMovieFromWatchList(data.id) : addMovieToWatchList(data);
+                                    isMovieInWatchList ? removeMovieFromWatchList(data.api_id) : addMovieToWatchList(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieInWatchList ? faMinus : faPlus} />
@@ -55,7 +53,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieInFavorites ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieInFavorites ? removeMovieFromFavorites(data.id) : addMovieToFavorites(data);
+                                    isMovieInFavorites ? removeMovieFromFavorites(data.api_id) : addMovieToFavorites(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieInFavorites ? faHeartBroken : faHeart} />
@@ -64,7 +62,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieWatched ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieWatched ? removeMovieFromWatched(data.id) : addMovieToWatched(data);
+                                    isMovieWatched ? removeMovieFromWatched(data.api_id) : addMovieToWatched(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieWatched ? faEyeSlash : faEye} />

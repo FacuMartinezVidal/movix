@@ -17,17 +17,32 @@ export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     useEffect(() => {
-        localStorage.setItem("watchList", JSON.stringify(state.watchList));
-        localStorage.setItem("watched", JSON.stringify(state.watched));
-        localStorage.setItem("favorites", JSON.stringify(state.favorites));
-        localStorage.setItem("user", JSON.stringify(state.user));
         if (state.user && state.user.token) {
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${state.user.token}`;
+            fetchUserLists();
         } else {
             localStorage.removeItem("token");
             delete axiosInstance.defaults.headers.common['Authorization'];
         }
-    }, [state.watchList, state.watched, state.favorites, state.user]);
+    }, [state.user]);
+
+    const fetchUserLists = async () => {
+        if (state.user) {
+            const userId = state.user.id;
+            try {
+                const [watchListResponse, watchedResponse, favoritesResponse] = await Promise.all([
+                    axiosInstance.get(`/watchlist/${userId}`),
+                    axiosInstance.get(`/watched/${userId}`),
+                    axiosInstance.get(`/favorites/${userId}`)
+                ]);
+                dispatch({ type: "SET_WATCHLIST", payload: watchListResponse.data });
+                dispatch({ type: "SET_WATCHED", payload: watchedResponse.data });
+                dispatch({ type: "SET_FAVORITES", payload: favoritesResponse.data });
+            } catch (error) {
+                console.error("Error fetching user lists:", error);
+            }
+        }
+    };
 
     const findMovieInDatabase = async (id) => {
         try {
@@ -229,6 +244,7 @@ export const GlobalProvider = ({ children }) => {
                 register,
                 updateUser,
                 logout,
+                fetchUserLists
             }}
         >
             {children}

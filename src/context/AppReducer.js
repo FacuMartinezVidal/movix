@@ -59,7 +59,6 @@ export default (state, action) => {
                 ...state,
                 error: action.payload,
             };
-
         case "UPDATE_USER":
             return {
                 ...state,
@@ -80,6 +79,21 @@ export default (state, action) => {
                 watched: [],
                 favorites: [],
                 error: null,
+            };
+        case "SET_WATCHLIST":
+            return {
+                ...state,
+                watchList: action.payload,
+            };
+        case "SET_WATCHED":
+            return {
+                ...state,
+                watched: action.payload,
+            };
+        case "SET_FAVORITES":
+            return {
+                ...state,
+                favorites: action.payload,
             };
         default:
             return state;

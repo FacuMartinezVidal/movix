@@ -33,7 +33,6 @@ const watchList = () => {
     const {data: genresData} = useFetch(`/genre/movie/list`);
 
     const {watchList} = useContext(GlobalContext);
-    console.log(watchList);
     useEffect(() => {
         filters = {};
         setData(null);
@@ -110,12 +109,11 @@ const watchList = () => {
                                 loader={<Spinner/>}
                             >
                                 {watchList.map((item) => {
+                                    const movie = item.movie;
                                     return (
-                                        <MovieCard
-                                            key={null}
-                                            data={item}
-                                            mediaType={mediaType}
-                                        />
+                                        movie && (
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} />
+                                        )
                                     );
                                 })}
                             </InfiniteScroll>
