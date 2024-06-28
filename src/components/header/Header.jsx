@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {HiOutlineSearch} from "react-icons/hi";
 import {SlMenu} from "react-icons/sl";
 import {VscChromeClose} from "react-icons/vsc";
@@ -8,8 +8,11 @@ import "./style.scss";
 
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import logo from "../../assets/movix-logo.svg";
+import avatar from "../../assets/avatar.png"; // Agrega un avatar por defecto
+import {GlobalContext} from "../../context/GlobalState";
 
 const Header = () => {
+    const { user, token, logout } = useContext(GlobalContext); // Obtener usuario y token del contexto global
     const [show, setShow] = useState("top");
     const [lastScrollY, setLastScrollY] = useState(0);
     const [mobileMenu, setMobileMenu] = useState(false);
@@ -66,80 +69,83 @@ const Header = () => {
             navigate("/explore/movie");
         }
         if (type === "favorite") {
-            navigate("/favorite");
+            navigate("/favorites");
         }
         if (type === "watched") {
-            navigate("/watched")
+            navigate("/watched");
         }
         if (type === "watchlist") {
             navigate("/watchlist");
         }
-        if (type === "register"){
+        if (type === "register") {
             navigate("/auth/register");
         }
         if (type === "signin") {
             navigate("/auth/signin");
         }
+        if (type === "profile") {
+            navigate("/profile");
+        }
+        if (type === "profile") {
+            navigate("/profile");
+        }
         setMobileMenu(false);
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate("/auth/signin");
     };
 
     return (
         <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
             <ContentWrapper>
                 <div className="logo" onClick={() => navigate("/")}>
-                    <img src={logo} alt=""/>
+                    <img src={logo} alt="" />
                 </div>
                 <ul className="menuItems">
-                    <li
-                        className="menuItem"
-                        onClick={() => navigationHandler("movie")}
-                    >
+                    <li className="menuItem" onClick={() => navigationHandler("movie")}>
                         Movies
                     </li>
-                    {/*TODO change when user register */}
-                    <li
-                        className="menuItem"
-                        onClick={() => navigationHandler("signin")}
-                    >
-                        Sign Up
-                    </li>
-                    <li
-                        className="menuItem"
-                        onClick={() => navigationHandler("register")}
-                    >
-                        Register
-                    </li>
-                    <li
-                        className="menuItem"
-                        onClick={() => navigationHandler("watchlist")}
-                    >
-                        Watch List
-                    </li>
-
-                    <li
-                        className="menuItem"
-                        onClick={()=> navigate("/favorites")}
-                    >
-                        Favorites
-                    </li>
-                    <li
-                        className="menuItem"
-                        onClick={() => {navigationHandler("watched")}}
-                    >
-                        Watched
-                    </li>
-
+                    {token ? (
+                        <>
+                            <li className="menuItem" onClick={() => navigationHandler("watchlist")}>
+                                Watch List
+                            </li>
+                            <li className="menuItem" onClick={() => navigationHandler("favorite")}>
+                                Favorites
+                            </li>
+                            <li className="menuItem" onClick={() => navigationHandler("watched")}>
+                                Watched
+                            </li>
+                            <li className="menuItem" onClick={() => navigationHandler("profile")}>
+                                <img src={avatar} alt="Avatar" className="avatar" />
+                                {user.name}
+                            </li>
+                            <li className="menuItem" onClick={handleLogout}>
+                                Logout
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li className="menuItem" onClick={() => navigationHandler("signin")}>
+                                Sign In
+                            </li>
+                            <li className="menuItem" onClick={() => navigationHandler("register")}>
+                                Register
+                            </li>
+                        </>
+                    )}
                     <li className="menuItem">
-                        <HiOutlineSearch onClick={openSearch}/>
+                        <HiOutlineSearch onClick={openSearch} />
                     </li>
                 </ul>
-
                 <div className="mobileMenuItems">
-                    <HiOutlineSearch onClick={openSearch}/>
+                    <HiOutlineSearch onClick={openSearch} />
                     {mobileMenu ? (
-                        <VscChromeClose onClick={() => setMobileMenu(false)}/>
+                        <VscChromeClose onClick={() => setMobileMenu(false)} />
                     ) : (
-                        <SlMenu onClick={openMobileMenu}/>
+                        <SlMenu onClick={openMobileMenu} />
                     )}
                 </div>
             </ContentWrapper>
@@ -153,9 +159,7 @@ const Header = () => {
                                 onChange={(e) => setQuery(e.target.value)}
                                 onKeyUp={searchQueryHandler}
                             />
-                            <VscChromeClose
-                                onClick={() => setShowSearch(false)}
-                            />
+                            <VscChromeClose onClick={() => setShowSearch(false)} />
                         </div>
                     </ContentWrapper>
                 </div>

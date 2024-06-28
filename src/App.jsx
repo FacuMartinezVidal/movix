@@ -18,6 +18,7 @@ import Favorites from "./pages/favorites/Favorites.jsx";
 import Watched from "./pages/watched/Watched.jsx";
 import Register from "./pages/auth/Register.jsx";
 import SignIn from "./pages/auth/SignIn.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -70,6 +71,7 @@ function App() {
                     <Route path="/watched" element={<Watched/>}/>
                     <Route path="/auth/register" element={<Register/>}/>
                     <Route path="auth/signin" element={<SignIn/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
                 </Routes>
                 <Footer/>
             </BrowserRouter>

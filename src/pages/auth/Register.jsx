@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ContentWrapper from "../../components/contentWrapper/ContentWrapper"; // Asegúrate de importar el ContentWrapper
-import "./auth.scss"; // Archivo SCSS compartido para SignIn y Register
+import React, {useContext, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
+import {GlobalContext} from "../../context/GlobalState.jsx";
+import "./auth.scss";
 
 const Register = () => {
-    const [name, setName] = useState("");
+    const [username, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { register, error } = useContext(GlobalContext);
     const navigate = useNavigate();
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        // Lógica de registro aquí
-        console.log("Registered with", name, email, password);
-        navigate("/auth/signin"); // Redirigir a SignIn después de registrarse
+        await register(username, email, password);
+        navigate("/auth/signin");
     };
 
     return (
@@ -23,11 +24,11 @@ const Register = () => {
                     <h2 className="auth-title">Register</h2>
                     <form onSubmit={handleRegister} className="auth-form">
                         <div className="auth-input-group">
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="username">Username</label>
                             <input
                                 type="text"
-                                id="name"
-                                value={name}
+                                id="username"
+                                value={username}
                                 onChange={(e) => setName(e.target.value)}
                                 required
                             />
@@ -52,6 +53,7 @@ const Register = () => {
                                 required
                             />
                         </div>
+                        {error && <p className="auth-error">{error}</p>}
                         <button type="submit" className="auth-button">
                             Register
                         </button>

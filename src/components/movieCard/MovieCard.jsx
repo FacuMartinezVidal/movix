@@ -1,16 +1,15 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faHeart, faEye, faHeartBroken, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEye, faEyeSlash, faHeart, faHeartBroken, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import Img from "../lazyLoadImage/Img";
 import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
 import PosterFallback from "../../assets/no-poster.png";
-import { GlobalContext } from "../../context/GlobalState.jsx";
+import {GlobalContext} from "../../context/GlobalState.jsx";
 
 const MovieCard = ({ data, fromSearch }) => {
     const { url } = useSelector((state) => state.home);
@@ -22,22 +21,18 @@ const MovieCard = ({ data, fromSearch }) => {
     const {
         addMovieToWatchList,
         removeMovieFromWatchList,
-        addMovieToFavorites,
-        removeMovieFromFavorites,
+        watchList,
         addMovieToWatched,
         removeMovieFromWatched,
-        watchList,
+        watched,
+        addMovieToFavorites,
+        removeMovieFromFavorites,
         favorites,
-        watched
     } = useContext(GlobalContext);
 
-    let storedMovie = watchList.find((o) => o.id === data.id);
-    let storedFavorite = favorites.find((o) => o.id === data.id);
-    let storedWatched = watched.find((o) => o.id === data.id);
-
-    const isMovieInWatchList = !!storedMovie;
-    const isMovieInFavorites = !!storedFavorite;
-    const isMovieInWatched = !!storedWatched;
+    const isMovieInWatchList = !!watchList.find((o) => o.id === data.id);
+    const isMovieWatched = !!watched.find((o) => o.id === data.id);
+    const isMovieInFavorites = !!favorites.find((o) => o.id === data.id);
 
     return (
         <div className="movieCard">
@@ -66,13 +61,13 @@ const MovieCard = ({ data, fromSearch }) => {
                                 <FontAwesomeIcon icon={isMovieInFavorites ? faHeartBroken : faHeart} />
                             </button>
                             <button
-                                className={`iconButton ${isMovieInWatched ? "active" : ""}`}
+                                className={`iconButton ${isMovieWatched ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieInWatched ? removeMovieFromWatched(data.id) : addMovieToWatched(data);
+                                    isMovieWatched ? removeMovieFromWatched(data.id) : addMovieToWatched(data);
                                 }}
                             >
-                                <FontAwesomeIcon icon={isMovieInWatched ? faEyeSlash : faEye} />
+                                <FontAwesomeIcon icon={isMovieWatched ? faEyeSlash : faEye} />
                             </button>
                         </div>
                         <Genres data={data.genre_ids.slice(0, 2)} />
@@ -82,8 +77,8 @@ const MovieCard = ({ data, fromSearch }) => {
             <div className="textBlock">
                 <span className="title">{data.title || data.name}</span>
                 <span className="date">
-                    {dayjs(data.release_date).format("MMM D, YYYY")}
-                </span>
+          {dayjs(data.release_date).format("MMM D, YYYY")}
+        </span>
             </div>
         </div>
     );

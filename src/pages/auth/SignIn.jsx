@@ -1,18 +1,24 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ContentWrapper from "../../components/contentWrapper/ContentWrapper"; // Asegúrate de importar el ContentWrapper
-import "./auth.scss"; // Archivo SCSS compartido para SignIn y Register
+import React, {useContext, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {GlobalContext} from "../../context/GlobalState";
+import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
+import "./auth.scss";
 
 const SignIn = () => {
+    const { login } = useContext(GlobalContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleSignIn = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Lógica de autenticación aquí
-        console.log("Signed in with", email, password);
-        navigate("/"); // Redirigir al home después de iniciar sesión
+        const response = await login(email, password);
+        if (response.success) {
+            navigate("/");
+        } else {
+            setError(response.message);
+        }
     };
 
     return (
@@ -20,7 +26,7 @@ const SignIn = () => {
             <ContentWrapper>
                 <div className="auth-container">
                     <h2 className="auth-title">Sign In</h2>
-                    <form onSubmit={handleSignIn} className="auth-form">
+                    <form onSubmit={handleLogin} className="auth-form">
                         <div className="auth-input-group">
                             <label htmlFor="email">Email</label>
                             <input
@@ -41,9 +47,8 @@ const SignIn = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="auth-button">
-                            Sign In
-                        </button>
+                        {error && <div className="auth-error">{error}</div>}
+                        <button type="submit" className="auth-button">Sign In</button>
                     </form>
                     <p className="auth-switch">
                         Don't have an account? <a onClick={() => navigate("/auth/register")}>Register</a>
