@@ -180,16 +180,6 @@ export const GlobalProvider = ({ children }) => {
             console.log("Respuesta del servidor (registro):", response.data);
             const { data } = response;
             if (data.success) {
-                dispatch({
-                    type: "REGISTER_SUCCESS",
-                    payload: {
-                        user: data.user,
-                        token: data.token,
-                    },
-                });
-                axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
                 return { success: true };
             } else {
                 dispatch({ type: "REGISTER_ERROR", payload: data.message });
