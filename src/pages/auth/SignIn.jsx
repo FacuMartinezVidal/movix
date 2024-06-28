@@ -15,6 +15,7 @@ const SignIn = () => {
         e.preventDefault();
         const response = await login(email, password);
         if (response.success) {
+            console.log("Login exitoso, estado actualizado:", response);
             navigate("/");
         } else {
             setError(response.message);

@@ -8,11 +8,11 @@ import "./style.scss";
 
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import logo from "../../assets/movix-logo.svg";
-import avatar from "../../assets/avatar.png"; // Agrega un avatar por defecto
+import avatar from "../../assets/avatar.png";
 import {GlobalContext} from "../../context/GlobalState";
 
 const Header = () => {
-    const { user, token, logout } = useContext(GlobalContext); // Obtener usuario y token del contexto global
+    const { user, logout } = useContext(GlobalContext);
     const [show, setShow] = useState("top");
     const [lastScrollY, setLastScrollY] = useState(0);
     const [mobileMenu, setMobileMenu] = useState(false);
@@ -86,9 +86,6 @@ const Header = () => {
         if (type === "profile") {
             navigate("/profile");
         }
-        if (type === "profile") {
-            navigate("/profile");
-        }
         setMobileMenu(false);
     };
 
@@ -107,7 +104,7 @@ const Header = () => {
                     <li className="menuItem" onClick={() => navigationHandler("movie")}>
                         Movies
                     </li>
-                    {token ? (
+                    {user ? (
                         <>
                             <li className="menuItem" onClick={() => navigationHandler("watchlist")}>
                                 Watch List
@@ -120,7 +117,7 @@ const Header = () => {
                             </li>
                             <li className="menuItem" onClick={() => navigationHandler("profile")}>
                                 <img src={avatar} alt="Avatar" className="avatar" />
-                                {user.name}
+                                {user?.name || "User"}
                             </li>
                             <li className="menuItem" onClick={handleLogout}>
                                 Logout

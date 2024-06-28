@@ -40,14 +40,26 @@ export default (state, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                error: null,
+            };
+        case "REGISTER_SUCCESS":
+            return {
+                ...state,
+                user: action.payload.user,
                 token: action.payload.token,
                 error: null,
             };
-        case "LOGIN_FAILURE":
+        case "LOGIN_ERROR":
             return {
                 ...state,
                 error: action.payload,
             };
+        case "REGISTER_ERROR":
+            return {
+                ...state,
+                error: action.payload,
+            };
+
         case "UPDATE_USER":
             return {
                 ...state,

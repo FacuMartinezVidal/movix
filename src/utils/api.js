@@ -21,22 +21,6 @@ export const fetchDataFromApi = async (url, params) => {
 
 
 const API_URL = "http://localhost:8000/api/v1";
-export const registerUser = async (username, email, password) => {
-    const response = await axios.post(`${API_URL}/auth/register`, {
-        username,
-        email,
-        password,
-    });
-    return response.data;
-};
-
-export const loginUser = async (email, password) => {
-    const response = await axios.post(`${API_URL}/auth/login`, {
-        email,
-        password,
-    });
-    return response.data;
-};
 
 export const addMovieToDatabase = async (movie) => {
     const response = await axios.post(`${API_URL}/movies`, movie);

@@ -13,8 +13,18 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        await register(username, email, password);
-        navigate("/auth/signin");
+        console.log("Iniciando registro...");
+        try {
+            const result = await register(username, email, password);
+            console.log("Resultado del registro:", result);
+            if (result.success) {
+                navigate("/auth/signin");
+            } else {
+                console.error("Error en el registro:", result.message);
+            }
+        } catch (error) {
+            console.error("Error al llamar a register:", error);
+        }
     };
 
     return (
