@@ -10,32 +10,25 @@ import {GlobalContext} from "../../context/GlobalState.jsx";
 let filters = {};
 
 const sortbyData = [
-    {value: "popularity.desc", label: "Popularity Descending"},
-    {value: "popularity.asc", label: "Popularity Ascending"},
-    {value: "vote_average.desc", label: "Rating Descending"},
-    {value: "vote_average.asc", label: "Rating Ascending"},
-    {
-        value: "primary_release_date.desc",
-        label: "Release Date Descending",
-    },
-    {value: "primary_release_date.asc", label: "Release Date Ascending"},
-    {value: "original_title.asc", label: "Title (A-Z)"},
+    { value: "popularity.desc", label: "Popularity Descending" },
+    { value: "popularity.asc", label: "Popularity Ascending" },
+    { value: "vote_average.desc", label: "Rating Descending" },
+    { value: "vote_average.asc", label: "Rating Ascending" },
+    { value: "primary_release_date.desc", label: "Release Date Descending" },
+    { value: "primary_release_date.asc", label: "Release Date Ascending" },
+    { value: "original_title.asc", label: "Title (A-Z)" },
 ];
 
-const watchList = () => {
-    const [data, setData] = useState(null);
+const WatchList = () => {
     const [loading, setLoading] = useState(false);
     const [genre, setGenre] = useState(null);
     const [sortby, setSortby] = useState(null);
-    const {mediaType} = useParams();
+    const { mediaType } = useParams();
+    const { data: genresData } = useFetch(`/genre/movie/list`);
+    const { watchList } = useContext(GlobalContext);
 
-    const {data: genresData} = useFetch(`/genre/movie/list`);
-
-    const {watchList} = useContext(GlobalContext);
     useEffect(() => {
         filters = {};
-        setData(null);
-
         setSortby(null);
         setGenre(null);
     }, [mediaType]);
@@ -60,33 +53,33 @@ const watchList = () => {
                 delete filters.with_genres;
             }
         }
-
     };
 
     return (
         <div className="explorePage">
             <ContentWrapper>
                 <div className="pageHeader">
-                    <div className="pageTitle">
-                        Your Movies Watchlist!
-                    </div>
+                    <div className="pageTitle">Your Movies Watchlist!</div>
                 </div>
-                {loading && <Spinner initial={true}/>}
+                {loading && <Spinner initial={true} />}
                 {!loading && (
                     <>
                         {watchList.length > 0 ? (
                             <InfiniteScroll
                                 className="content"
-                                dataLength={data?.results?.length || []}
+                                dataLength={watchList.length}
                                 next={null}
-                                hasMore={null}
-                                loader={<Spinner/>}
+                                hasMore={false}
+                                loader={<Spinner />}
                             >
                                 {watchList.map((item) => {
-                                    const movie = item.movie;
                                     return (
-                                        movie && (
-                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} />
+                                        item && (
+                                            <MovieCard
+                                                key={item.movie.id}
+                                                data={item.movie}
+                                                mediaType={mediaType}
+                                            />
                                         )
                                     );
                                 })}
@@ -101,6 +94,6 @@ const watchList = () => {
             </ContentWrapper>
         </div>
     );
-}
+};
 
-export default watchList;
+export default WatchList;

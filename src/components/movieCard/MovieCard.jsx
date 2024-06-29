@@ -34,7 +34,7 @@ const MovieCard = ({ data, fromSearch }) => {
 
     return (
         <div className="movieCard">
-            <div className="posterBlock" onClick={() => navigate(`/movie/${data.api_id}`)}>
+            <div className="posterBlock" onClick={() => navigate(`/movie/${data.id}`)}>
                 <Img className="posterImg" src={posterUrl} />
                 {!fromSearch && (
                     <>
