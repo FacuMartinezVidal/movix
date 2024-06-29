@@ -51,7 +51,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             return null;
         }
-    }
+    };
 
     const addMovieToDatabase = async (movie) => {
         try {
@@ -60,7 +60,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             return null;
         }
-    }
+    };
 
     const addMovieToWatchList = async (movie) => {
         const userId = state.user.id;
@@ -77,8 +77,7 @@ export const GlobalProvider = ({ children }) => {
         });
 
         if (response.data.success) {
-            dispatch({ type: "ADD_MOVIE_TO_WATCHLIST", payload: {movie} });
-            fetchUserLists()
+            dispatch({ type: "ADD_MOVIE_TO_WATCHLIST", payload: { ...movie, api_id: id } });
         }
     };
 
@@ -97,8 +96,7 @@ export const GlobalProvider = ({ children }) => {
         });
 
         if (response.data.success) {
-            dispatch({ type: "ADD_MOVIE_TO_WATCHED", payload: movie });
-            fetchUserLists();
+            dispatch({ type: "ADD_MOVIE_TO_WATCHED", payload: { ...movie, api_id: id } });
         }
     };
 
@@ -117,8 +115,7 @@ export const GlobalProvider = ({ children }) => {
         });
 
         if (response.data.success) {
-            dispatch({ type: "ADD_MOVIE_TO_FAVORITES", payload: movie });
-            fetchUserLists();
+            dispatch({ type: "ADD_MOVIE_TO_FAVORITES", payload: { ...movie, api_id: id } });
         }
     };
 
@@ -128,7 +125,7 @@ export const GlobalProvider = ({ children }) => {
         const response = await axiosInstance.delete(`/watchlist/${userId}/${id}`);
         if (response.data.success) {
             dispatch({ type: "REMOVE_MOVIE_FROM_WATCHLIST", payload: id });
-            fetchUserLists(); // Update lists after removing movie
+            fetchUserLists()
         }
     };
 
@@ -138,7 +135,7 @@ export const GlobalProvider = ({ children }) => {
         const response = await axiosInstance.delete(`/watched/${userId}/${id}`);
         if (response.data.success) {
             dispatch({ type: "REMOVE_MOVIE_FROM_WATCHED", payload: id });
-            fetchUserLists();
+            fetchUserLists()
         }
     };
 
@@ -148,7 +145,7 @@ export const GlobalProvider = ({ children }) => {
         const response = await axiosInstance.delete(`/favorites/${userId}/${id}`);
         if (response.data.success) {
             dispatch({ type: "REMOVE_MOVIE_FROM_FAVORITES", payload: id });
-            fetchUserLists();
+            fetchUserLists()
         }
     };
 

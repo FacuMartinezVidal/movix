@@ -11,7 +11,7 @@ import Genres from "../genres/Genres";
 import PosterFallback from "../../assets/no-poster.png";
 import {GlobalContext} from "../../context/GlobalState.jsx";
 
-const MovieCard = ({ data, fromSearch }) => {
+const MovieCard = ({ data, fromSearch, type }) => {
     const { url } = useSelector((state) => state.home);
     const navigate = useNavigate();
     const posterUrl = data.poster_path ? url.poster + data.poster_path : PosterFallback;
@@ -28,13 +28,23 @@ const MovieCard = ({ data, fromSearch }) => {
         favorites,
     } = useContext(GlobalContext);
 
-    const isMovieInWatchList = !!watchList.find((o) => o.api_id === data.api_id);
-    const isMovieWatched = !!watched.find((o) => o.api_id === data.api_id);
-    const isMovieInFavorites = !!favorites.find((o) => o.api_id === data.api_id);
+    const getId = () => {
+        return type === "movie" ? data.id : data.api_id;
+    };
+
+    const id = getId();
+    const isMovieInWatchList = !!watchList.find((o) => o.id === id || o.api_id === id);
+    const isMovieWatched = !!watched.find((o) => o.id === id || o.api_id === id);
+    const isMovieInFavorites = !!favorites.find((o) => o.id === id || o.api_id === id);
+
+    const navigateToDetails = () => {
+        const path = type === "list" ? `/movie/${id}` : `/movie/${id}`;
+        navigate(path);
+    };
 
     return (
         <div className="movieCard">
-            <div className="posterBlock" onClick={() => navigate(`/movie/${data.id}`)}>
+            <div className="posterBlock" onClick={navigateToDetails}>
                 <Img className="posterImg" src={posterUrl} />
                 {!fromSearch && (
                     <>
@@ -44,7 +54,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieInWatchList ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieInWatchList ? removeMovieFromWatchList(data.api_id) : addMovieToWatchList(data);
+                                    isMovieInWatchList ? removeMovieFromWatchList(id) : addMovieToWatchList(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieInWatchList ? faMinus : faPlus} />
@@ -53,7 +63,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieInFavorites ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieInFavorites ? removeMovieFromFavorites(data.api_id) : addMovieToFavorites(data);
+                                    isMovieInFavorites ? removeMovieFromFavorites(id) : addMovieToFavorites(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieInFavorites ? faHeartBroken : faHeart} />
@@ -62,7 +72,7 @@ const MovieCard = ({ data, fromSearch }) => {
                                 className={`iconButton ${isMovieWatched ? "active" : ""}`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    isMovieWatched ? removeMovieFromWatched(data.api_id) : addMovieToWatched(data);
+                                    isMovieWatched ? removeMovieFromWatched(id) : addMovieToWatched(data);
                                 }}
                             >
                                 <FontAwesomeIcon icon={isMovieWatched ? faEyeSlash : faEye} />
@@ -75,8 +85,8 @@ const MovieCard = ({ data, fromSearch }) => {
             <div className="textBlock">
                 <span className="title">{data.title || data.name}</span>
                 <span className="date">
-          {dayjs(data.release_date).format("MMM D, YYYY")}
-        </span>
+                    {dayjs(data.release_date).format("MMM D, YYYY")}
+                </span>
             </div>
         </div>
     );

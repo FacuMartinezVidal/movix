@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import useFetch from "../../hooks/useFetch.jsx";
+import InfiniteScroll from "react-infinite-scroll-component";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper.jsx";
 import Spinner from "../../components/spinner/Spinner.jsx";
-import InfiniteScroll from "react-infinite-scroll-component";
 import MovieCard from "../../components/movieCard/MovieCard.jsx";
 import {GlobalContext} from "../../context/GlobalState.jsx";
 
@@ -14,24 +13,33 @@ const sortbyData = [
     { value: "popularity.asc", label: "Popularity Ascending" },
     { value: "vote_average.desc", label: "Rating Descending" },
     { value: "vote_average.asc", label: "Rating Ascending" },
-    { value: "primary_release_date.desc", label: "Release Date Descending" },
+    {
+        value: "primary_release_date.desc",
+        label: "Release Date Descending",
+    },
     { value: "primary_release_date.asc", label: "Release Date Ascending" },
     { value: "original_title.asc", label: "Title (A-Z)" },
 ];
 
 const WatchList = () => {
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [genre, setGenre] = useState(null);
     const [sortby, setSortby] = useState(null);
     const { mediaType } = useParams();
-    const { data: genresData } = useFetch(`/genre/movie/list`);
-    const { watchList } = useContext(GlobalContext);
+
+    const { watchList, fetchUserLists } = useContext(GlobalContext);
 
     useEffect(() => {
         filters = {};
+        setData(null);
         setSortby(null);
         setGenre(null);
     }, [mediaType]);
+
+    useEffect(() => {
+        fetchUserLists();
+    }, []); // Fetch user lists only once when the component mounts
 
     const onChange = (selectedItems, action) => {
         if (action.name === "sortby") {
@@ -67,19 +75,16 @@ const WatchList = () => {
                         {watchList.length > 0 ? (
                             <InfiniteScroll
                                 className="content"
-                                dataLength={watchList.length}
+                                dataLength={data?.results?.length || 0}
                                 next={null}
                                 hasMore={false}
                                 loader={<Spinner />}
                             >
                                 {watchList.map((item) => {
+                                    const movie = item.movie;
                                     return (
-                                        item && (
-                                            <MovieCard
-                                                key={item.movie.id}
-                                                data={item.movie}
-                                                mediaType={mediaType}
-                                            />
+                                        movie && (
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} type="list" />
                                         )
                                     );
                                 })}

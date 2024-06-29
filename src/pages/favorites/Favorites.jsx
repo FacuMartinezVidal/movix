@@ -31,7 +31,7 @@ const Favorites = () => {
 
     const {data: genresData} = useFetch(`/genre/movie/list`);
 
-    const {favorites} = useContext(GlobalContext);
+    const {favorites, fetchUserLists} = useContext(GlobalContext);
     useEffect(() => {
         filters = {};
         setData(null);
@@ -39,6 +39,10 @@ const Favorites = () => {
         setSortby(null);
         setGenre(null);
     }, [mediaType]);
+
+    useEffect(() => {
+        fetchUserLists();
+    }, []);
 
     const onChange = (selectedItems, action) => {
         if (action.name === "sortby") {

@@ -31,7 +31,7 @@ const Watched = () => {
 
     const {data: genresData} = useFetch(`/genre/movie/list`);
 
-    const {watched} = useContext(GlobalContext);
+    const {watched, fetchUserLists} = useContext(GlobalContext);
     useEffect(() => {
         filters = {};
         setData(null);
@@ -39,6 +39,9 @@ const Watched = () => {
         setSortby(null);
         setGenre(null);
     }, [mediaType]);
+    useEffect(() => {
+        fetchUserLists();
+    }, []); // Fetch user lists only once when the component mounts
 
     const onChange = (selectedItems, action) => {
         if (action.name === "sortby") {
