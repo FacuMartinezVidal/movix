@@ -84,7 +84,7 @@ const WatchList = () => {
                                     const movie = item.movie;
                                     return (
                                         movie && (
-                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} type="list" />
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} type="list" view="watchlist" />
                                         )
                                     );
                                 })}

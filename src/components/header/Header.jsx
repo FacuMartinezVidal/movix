@@ -116,8 +116,13 @@ const Header = () => {
                                 Watched
                             </li>
                             <li className="menuItem" onClick={() => navigationHandler("profile")}>
-                                <img src={avatar} alt="Avatar" className="avatar" />
-                                {user?.name || "User"}
+                                {!mobileMenu && <img src={avatar} alt="Avatar" className="avatar" />}
+                                <p style={{
+                                    background: 'linear-gradient(98.37deg, #f89e00 0.99%, #da2f68 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    fontWeight:'bold'
+                                }}>{user?.username}</p>
                             </li>
                             <li className="menuItem" onClick={handleLogout}>
                                 Logout

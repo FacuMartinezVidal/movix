@@ -1,8 +1,14 @@
 @import "../../mixins.scss";
 
 .explorePage {
-    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; // Asegura que la página ocupe al menos el 100% de la altura de la ventana
     padding-top: 100px;
+
+    .contentWrapper {
+        flex: 1; // Permite que el contenedor principal crezca para llenar el espacio disponible
+    }
 
     .resultNotFound {
         font-size: 24px;
@@ -33,7 +39,7 @@
         display: flex;
         gap: 10px;
         flex-direction: column;
-        z-index: 10; // Asegura que los filtros estén por encima de otros elementos
+        z-index: 2; // Asegura que los filtros estén por encima de otros elementos
         @include md {
             flex-direction: row;
         }
@@ -97,7 +103,7 @@
                 top: 40px;
                 margin: 0;
                 padding: 0;
-                z-index: 11; // Asegura que el menú de select esté por encima de otros elementos
+                z-index: 1000; // Asegura que el menú de select esté por encima de otros elementos
             }
         }
     }
@@ -222,4 +228,12 @@
             }
         }
     }
+}
+
+.footer {
+    background-color: var(--black3);
+    padding: 20px 0;
+    color: white;
+    text-align: center;
+    flex-shrink: 0; // Asegura que el footer no se encoja
 }

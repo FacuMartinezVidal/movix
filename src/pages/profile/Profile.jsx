@@ -80,9 +80,17 @@ const Profile = () => {
                         </form>
                     ) : (
                         <div className="profile-info">
-                            <p><strong>Username:</strong> {user.username}</p>
-                            <p><strong>Email:</strong> {user.email}</p>
-                            <button className="edit-button" onClick={handleEdit}>Edit Profile</button>
+                            <div className="profile-field">
+                                <span className="label">Username:</span>
+                                <span>{user.username}</span>
+                            </div>
+                            <div className="profile-field">
+                                <span className="label">Email:</span>
+                                <span>{user.email}</span>
+                            </div>
+                            <button className="edit-button" onClick={handleEdit}>
+                                Edit Profile
+                            </button>
                         </div>
                     )}
                 </div>
@@ -92,3 +100,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

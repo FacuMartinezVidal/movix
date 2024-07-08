@@ -1,13 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import useFetch from "../../hooks/useFetch.jsx";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper.jsx";
 import Spinner from "../../components/spinner/Spinner.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import MovieCard from "../../components/movieCard/MovieCard.jsx";
 import {GlobalContext} from "../../context/GlobalState.jsx";
 
-let filters = {};
 
 const sortbyData = [
     {value: "popularity.desc", label: "Popularity Descending"},
@@ -25,46 +23,16 @@ const sortbyData = [
 const Watched = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [genre, setGenre] = useState(null);
-    const [sortby, setSortby] = useState(null);
     const {mediaType} = useParams();
 
-    const {data: genresData} = useFetch(`/genre/movie/list`);
+
 
     const {watched, fetchUserLists} = useContext(GlobalContext);
-    useEffect(() => {
-        filters = {};
-        setData(null);
 
-        setSortby(null);
-        setGenre(null);
-    }, [mediaType]);
     useEffect(() => {
         fetchUserLists();
     }, []); // Fetch user lists only once when the component mounts
 
-    const onChange = (selectedItems, action) => {
-        if (action.name === "sortby") {
-            setSortby(selectedItems);
-            if (action.action !== "clear") {
-                filters.sort_by = selectedItems.value;
-            } else {
-                delete filters.sort_by;
-            }
-        }
-
-        if (action.name === "genres") {
-            setGenre(selectedItems);
-            if (action.action !== "clear") {
-                let genreId = selectedItems.map((g) => g.id);
-                genreId = JSON.stringify(genreId).slice(1, -1);
-                filters.with_genres = genreId;
-            } else {
-                delete filters.with_genres;
-            }
-        }
-
-    };
 
     return (
         <div className="explorePage">
@@ -89,7 +57,7 @@ const Watched = () => {
                                     const movie = item.movie;
                                     return (
                                         movie && (
-                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} />
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} view="watched" />
                                         )
                                     );
                                 })}

@@ -5,10 +5,12 @@
   margin-bottom: 25px;
   cursor: pointer;
   flex-shrink: 0;
-  position: relative; // Asegura que los géneros estén posicionados correctamente dentro de la tarjeta
+  position: relative;
+
   @include md {
     width: calc(25% - 15px);
   }
+
   @include lg {
     width: calc(20% - 16px);
   }
@@ -40,6 +42,12 @@
       align-items: center;
       gap: 10px;
       z-index: 2;
+
+      &.singleButton {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
 
     &:hover {
@@ -54,9 +62,18 @@
     height: 40px;
     background-color: white;
     flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+
     @include md {
       width: 50px;
       height: 50px;
+      font-size: 16px;
     }
   }
 
@@ -89,6 +106,14 @@
     svg {
       font-size: 20px;
     }
+
+    @include md {
+      width: 50px;
+      height: 50px;
+      svg {
+        font-size: 24px;
+      }
+    }
   }
 
   .genres {
@@ -98,8 +123,8 @@
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
-    z-index: 3; // Asegura que los géneros estén encima de la imagen y el overlay
-    pointer-events: none; // Permite que los elementos interactivos subyacentes sean clicables
+    z-index: 3;
+    pointer-events: none;
   }
 
   .genre {
@@ -120,6 +145,7 @@
       margin-bottom: 10px;
       line-height: 24px;
       @include ellipsis(1);
+
       @include md {
         font-size: 20px;
       }
@@ -131,3 +157,4 @@
     }
   }
 }
+

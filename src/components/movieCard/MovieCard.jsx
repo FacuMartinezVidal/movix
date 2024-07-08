@@ -11,7 +11,7 @@ import Genres from "../genres/Genres";
 import PosterFallback from "../../assets/no-poster.png";
 import {GlobalContext} from "../../context/GlobalState.jsx";
 
-const MovieCard = ({ data, fromSearch, type }) => {
+const MovieCard = ({ data, fromSearch, type, view = "general" }) => {
     const { url } = useSelector((state) => state.home);
     const navigate = useNavigate();
     const posterUrl = data.poster_path ? url.poster + data.poster_path : PosterFallback;
@@ -38,8 +38,7 @@ const MovieCard = ({ data, fromSearch, type }) => {
     const isMovieInFavorites = !!favorites.find((o) => o.id === id || o.api_id === id);
 
     const navigateToDetails = () => {
-        const path = type === "list" ? `/movie/${id}` : `/movie/${id}`;
-        navigate(path);
+        navigate(`/movie/${id}`);
     };
 
     return (
@@ -48,35 +47,72 @@ const MovieCard = ({ data, fromSearch, type }) => {
                 <Img className="posterImg" src={posterUrl} />
                 {!fromSearch && (
                     <>
-                        <div className="overlay">
-                            <CircleRating rating={data.vote_average.toFixed(1)} />
-                            <button
-                                className={`iconButton ${isMovieInWatchList ? "active" : ""}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    isMovieInWatchList ? removeMovieFromWatchList(id) : addMovieToWatchList(data);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={isMovieInWatchList ? faMinus : faPlus} />
-                            </button>
-                            <button
-                                className={`iconButton ${isMovieInFavorites ? "active" : ""}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    isMovieInFavorites ? removeMovieFromFavorites(id) : addMovieToFavorites(data);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={isMovieInFavorites ? faHeartBroken : faHeart} />
-                            </button>
-                            <button
-                                className={`iconButton ${isMovieWatched ? "active" : ""}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    isMovieWatched ? removeMovieFromWatched(id) : addMovieToWatched(data);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={isMovieWatched ? faEyeSlash : faEye} />
-                            </button>
+                        <div className={`overlay ${view !== "general" ? "singleButton" : ""}`}>
+                            {view === "general" && (
+                                <>
+                                    <CircleRating rating={data.vote_average.toFixed(1)} />
+                                    <button
+                                        className={`iconButton ${isMovieInWatchList ? "active" : ""}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            isMovieInWatchList ? removeMovieFromWatchList(id) : addMovieToWatchList(data);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={isMovieInWatchList ? faMinus : faPlus} />
+                                    </button>
+                                    <button
+                                        className={`iconButton ${isMovieInFavorites ? "active" : ""}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            isMovieInFavorites ? removeMovieFromFavorites(id) : addMovieToFavorites(data);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={isMovieInFavorites ? faHeartBroken : faHeart} />
+                                    </button>
+                                    <button
+                                        className={`iconButton ${isMovieWatched ? "active" : ""}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            isMovieWatched ? removeMovieFromWatched(id) : addMovieToWatched(data);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={isMovieWatched ? faEyeSlash : faEye} />
+                                    </button>
+                                </>
+                            )}
+                            {view === "watchlist" && (
+                                <button
+                                    className="iconButton active"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeMovieFromWatchList(id);
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faMinus} />
+                                </button>
+                            )}
+                            {view === "favorites" && (
+                                <button
+                                    className="iconButton active"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeMovieFromFavorites(id);
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faHeartBroken} />
+                                </button>
+                            )}
+                            {view === "watched" && (
+                                <button
+                                    className="iconButton active"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeMovieFromWatched(id);
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faEyeSlash} />
+                                </button>
+                            )}
                         </div>
                         <Genres data={data.genre_ids.slice(0, 2)} />
                     </>

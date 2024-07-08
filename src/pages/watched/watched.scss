@@ -1,0 +1,9 @@
+@import "../../mixins.scss";
+
+.footer {
+  background-color: var(--black3);
+  padding: 20px 0;
+  color: white;
+  text-align: center;
+  flex-shrink: 0; // Asegura que el footer no se encoja
+}

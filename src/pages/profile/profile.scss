@@ -1,8 +1,14 @@
 @import "../../mixins.scss";
 
 .profilePage {
-  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Asegura que la página ocupe al menos el 100% de la altura de la ventana
   padding-top: 100px;
+
+  .contentWrapper {
+    flex: 1; // Permite que el contenedor principal crezca para llenar el espacio disponible
+  }
 
   .profile-container {
     max-width: 400px;
@@ -10,72 +16,108 @@
     padding: 40px 20px;
     background-color: var(--black3);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     color: white;
     text-align: center;
     margin-top: 100px;
 
     .avatar {
-      width: 100px;
-      height: 100px;
+      width: 120px; // Aumentar tamaño del avatar
+      height: 120px;
       border-radius: 50%;
-      margin-bottom: 20px;
+      margin-bottom: 30px; // Aumentar el margen inferior
       object-fit: cover;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .profile-title {
-      margin-bottom: 20px;
-      font-size: 24px;
+      margin-bottom: 30px; // Aumentar el margen inferior
+      font-size: 32px; // Aumentar tamaño de fuente
+      font-weight: bold;
     }
 
-    .profile-info,
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+
+      .profile-field {
+        font-size: 18px;
+        line-height: 1.5;
+        text-align: left;
+        width: 100%;
+
+        .label {
+          font-weight: bold;
+          margin-right: 10px;
+        }
+      }
+    }
+
     .profile-form {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      text-align: left;
+      gap: 20px;
 
-      .profile-input-group,
-      p {
+      .profile-input-group {
         display: flex;
         flex-direction: column;
         text-align: left;
 
         label {
           margin-bottom: 5px;
+          font-weight: bold;
         }
 
         input {
-          padding: 10px;
+          padding: 12px;
           border: none;
           border-radius: 5px;
           font-size: 16px;
           outline: none;
         }
-      }
 
-      .profile-button,
-      .cancel-button,
-      .edit-button {
-        padding: 10px;
-        background-color: #ff6347;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: #ff4500;
-        }
-      }
-
-      .cancel-button {
-        background-color: gray;
-        &:hover {
-          background-color: darkgray;
+        small {
+          margin-top: 5px;
+          color: var(--black-light);
         }
       }
     }
+
+    .profile-button,
+    .cancel-button,
+    .edit-button {
+      padding: 14px 24px;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 18px;
+      width: 100%;
+      margin-top: 20px;
+
+      &:hover {
+        background-color: #ff4500;
+      }
+    }
+
+    .cancel-button {
+      background-color: gray;
+      &:hover {
+        background-color: darkgray;
+      }
+    }
   }
+}
+
+.footer {
+  background-color: var(--black3);
+  padding: 20px 0;
+  color: white;
+  text-align: center;
+  flex-shrink: 0; // Asegura que el footer no se encoja
 }

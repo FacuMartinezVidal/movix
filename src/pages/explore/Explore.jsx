@@ -153,6 +153,7 @@ const Explore = () => {
                                             data={item}
                                             mediaType={mediaType}
                                             type="movie"
+                                            view="general"
                                         />
                                     );
                                 })}

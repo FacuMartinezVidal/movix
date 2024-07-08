@@ -91,7 +91,7 @@ const Favorites = () => {
                                     const movie = item.movie;
                                     return (
                                         movie && (
-                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} />
+                                            <MovieCard key={movie.id} data={movie} mediaType={mediaType} view="favorites"/>
                                         )
                                     );
                                 })}
