@@ -3,96 +3,106 @@ import {GlobalContext} from "../../context/GlobalState.jsx";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
 import avatar from "../../assets/avatar.png"; // Asegúrate de que la ruta sea correcta
 import "./profile.scss";
+import {useNavigate} from "react-router-dom";
 
 const Profile = () => {
-    const { user, updateUser } = useContext(GlobalContext); // Asume que existe una función updateUser en el contexto
+    const { user, updateUser, sendTokenPassword, changePassword } = useContext(GlobalContext);
     const [username, setUsername] = useState(user.username);
-    const [email, setEmail] = useState(user.email);
     const [password, setPassword] = useState("");
-    const [isEditing, setIsEditing] = useState(false);
+    const [token, setToken] = useState("");
+    const [isEditingUsername, setIsEditingUsername] = useState(false);
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handlePassword = async (e) => {
         e.preventDefault();
-        // Lógica para actualizar el usuario
-        const updatedUser = {};
-        if (username) updatedUser.username = username;
-        if (email) updatedUser.email = email;
-        if (password) updatedUser.password = password;
 
-        updateUser(updatedUser);
-        setIsEditing(false);
+        if (password && token) {
+            await changePassword(password, token);
+        }
+        setIsEditingPassword(false);
+        setMessage(message);
     };
 
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        setUsername(user.username);
-        setEmail(user.email);
-        setPassword("");
-    };
+    const handleUsername = async (e) => {
+        e.preventDefault();
+        const updatedUser = { ...user,email: user.email, username };
+        await updateUser(updatedUser);
+        setIsEditingUsername(false);
+    }
 
     return (
         <div className="profilePage">
             <ContentWrapper>
                 <div className="profile-container">
                     <img src={avatar} alt="Avatar" className="avatar" />
-                    <h2 className="profile-title">Profile</h2>
-                    {isEditing ? (
-                        <form onSubmit={handleSubmit} className="profile-form">
-                            <div className="profile-input-group">
-                                <label htmlFor="username">Username</label>
+                    <h2 className="profile-title">Login and Security</h2>
+
+                    <div className="profile-section">
+                        <span className="label">Username:</span>
+                        {isEditingUsername ? (
+                            <div className="edit-section">
                                 <input
                                     type="text"
-                                    id="username"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                 />
+                                <div className="button-group">
+                                    <button onClick={handleUsername} className="profile-button save-button">Save</button>
+                                    <button type="button" className="cancel-button" onClick={() => setIsEditingUsername(false)}>Cancel</button>
+                                </div>
                             </div>
-                            <div className="profile-input-group">
-                                <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required={true}
-                                />
+                        ) : (
+                            <div className="profile-field">
+                                <span>{username}</span>
+                                <button className="edit-button" onClick={() => setIsEditingUsername(true)}>Change</button>
                             </div>
-                            <div className="profile-input-group">
-                                <label htmlFor="password">Password</label>
+                        )}
+                    </div>
+
+                    <div className="profile-section">
+                        <span className="label">Email:</span>
+                        <div className="profile-field">
+                            <span>{user.email}</span>
+                        </div>
+                    </div>
+
+                    <div className="profile-section">
+                        <span className="label">Password:</span>
+                        {isEditingPassword ? (
+                            <div className="edit-section">
                                 <input
                                     type="password"
-                                    id="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="New Passowrd"
                                 />
-                                <small>Leave blank to keep the current password</small>
+                                <input
+                                    type="text"
+                                    value={token}
+                                    onChange={(e) => setToken(e.target.value)}
+                                    placeholder="Token"
+                                />
+                                <div className="button-group">
+                                    <button type="submit" className="profile-button save-button" onClick={handlePassword}>Save</button>
+                                    <button type="button" className="cancel-button" onClick={() => setIsEditingPassword(false)}>Cancel</button>
+                                </div>
+                                {message && <p className="message">{message}</p>}
                             </div>
-                            <button type="submit" className="profile-button">
-                                Save Changes
-                            </button>
-                            <button type="button" className="cancel-button" onClick={handleCancel}>
-                                Cancel
-                            </button>
-                        </form>
-                    ) : (
-                        <div className="profile-info">
+                        ) : (
                             <div className="profile-field">
-                                <span className="label">Username:</span>
-                                <span>{user.username}</span>
+                                <span>********</span>
+                                <button className="edit-button" onClick={async () => {
+                                    setIsEditingPassword(true);
+                                    await sendTokenPassword(user.email, user.username);
+                                }}>Change</button>
                             </div>
-                            <div className="profile-field">
-                                <span className="label">Email:</span>
-                                <span>{user.email}</span>
-                            </div>
-                            <button className="edit-button" onClick={handleEdit}>
-                                Edit Profile
-                            </button>
-                        </div>
-                    )}
+                        )}
+                    </div>
+
+                    <button onClick={() => {navigate("/")}} className="finalize-button" type="submit">Finish</button>
+                    {message && <p className="message">{message}</p>}
                 </div>
             </ContentWrapper>
         </div>
@@ -100,4 +110,3 @@ const Profile = () => {
 };
 
 export default Profile;
-

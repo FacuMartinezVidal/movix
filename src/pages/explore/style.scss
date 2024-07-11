@@ -3,11 +3,11 @@
 .explorePage {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; // Asegura que la página ocupe al menos el 100% de la altura de la ventana
+    min-height: 100vh;
     padding-top: 100px;
 
     .contentWrapper {
-        flex: 1; // Permite que el contenedor principal crezca para llenar el espacio disponible
+        flex: 1;
     }
 
     .resultNotFound {
@@ -39,7 +39,7 @@
         display: flex;
         gap: 10px;
         flex-direction: column;
-        z-index: 2; // Asegura que los filtros estén por encima de otros elementos
+        z-index: 2;
         @include md {
             flex-direction: row;
         }
@@ -103,128 +103,71 @@
                 top: 40px;
                 margin: 0;
                 padding: 0;
-                z-index: 1000; // Asegura que el menú de select esté por encima de otros elementos
+                z-index: 1000;
             }
         }
     }
 
     .content {
-        display: flex;
-        flex-flow: row wrap;
-        gap: 10px;
-        margin-bottom: 50px;
-        @include md {
-            gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+
+        @include sm {
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .movieCard {
-            .posterBlock {
-                margin-bottom: 30px;
-                position: relative; // Asegura que los géneros se posicionen correctamente dentro de la tarjeta
-                z-index: 1; // Asegura que el poster esté debajo de los filtros cuando se superponen
+        @include md {
+            grid-template-columns: repeat(4, 1fr);
+        }
 
-                .genres {
-                    position: absolute;
-                    top: 10px;
-                    left: 10px;
-                    display: flex;
-                    gap: 5px;
-                    flex-wrap: wrap;
-                    z-index: 2; // Asegura que los géneros estén encima del poster pero debajo de los filtros
-                    pointer-events: none; // Permite que los elementos interactivos subyacentes sean clicables
-                }
+        @include lg {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
 
-                .genre {
-                    background-color: rgba(0, 0, 0, 0.6);
-                    color: white;
-                    padding: 2px 6px;
-                    border-radius: 4px;
-                    font-size: 12px;
-                }
+    .movieCard {
+        width: 100%;
+        max-width: 250px;
+        margin: 0 auto;
 
-                .posterImg {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    border-radius: 12px;
-                    transition: opacity 0.5s ease;
-                }
+        .posterBlock {
+            aspect-ratio: 2/3;
+            margin-bottom: 10px;
 
-                .overlay {
-                    position: absolute;
-                    bottom: 10px;
-                    left: 10px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    z-index: 3; // Asegura que los botones de overlay estén encima de la imagen y los géneros
-                }
-
-                &:hover {
-                    .posterImg {
-                        opacity: 0.5;
-                    }
-                }
+            .posterImg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
-            .circleRating {
-                width: 40px;
-                height: 40px;
-                background-color: white;
-                flex-shrink: 0;
-                @include md {
-                    width: 50px;
-                    height: 50px;
-                }
+            .overlay {
+                bottom: 5px;
+                left: 5px;
+                gap: 5px;
+            }
+        }
+
+        .circleRating, .iconButton {
+            width: 35px;
+            height: 35px;
+            margin-bottom: 10px;
+
+            svg {
+                font-size: 14px;
+            }
+        }
+
+        .textBlock {
+            .title {
+                font-size: 16px;
+                margin-bottom: 5px;
+                line-height: 20px;
             }
 
-            .iconButton {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                background-color: #ff6347;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-
-                &:hover {
-                    background-color: #ff4500;
-                }
-
-                &:disabled {
-                    background-color: grey;
-                    cursor: not-allowed;
-                }
-
-                svg {
-                    font-size: 20px;
-                }
-            }
-
-            .textBlock {
-                color: white;
-                display: flex;
-                flex-direction: column;
-
-                .title {
-                    font-size: 16px;
-                    margin-bottom: 10px;
-                    line-height: 24px;
-                    @include ellipsis(1);
-                    @include md {
-                        font-size: 20px;
-                    }
-                }
-
-                .date {
-                    font-size: 14px;
-                    opacity: 0.5;
-                }
+            .date {
+                font-size: 14px;
             }
         }
     }
@@ -235,5 +178,5 @@
     padding: 20px 0;
     color: white;
     text-align: center;
-    flex-shrink: 0; // Asegura que el footer no se encoja
+    flex-shrink: 0;
 }

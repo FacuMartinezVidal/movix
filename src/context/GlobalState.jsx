@@ -193,19 +193,40 @@ export const GlobalProvider = ({ children }) => {
         }
     };
 
-    const updateUser = async (userData) => {
-        const { email } = userData;
+    const updateUser = async (updateUser) => {
+        const { email, username } = updateUser;
         try {
-            const response = await axiosInstance.put(`/users/email/${email}`, userData);
+            const response = await axiosInstance.put(`/users/email/${email}`, {username});
             const updatedUser = response.data.user;
-            dispatch({ type: "UPDATE_USER", payload: updatedUser });
-            localStorage.setItem("user", JSON.stringify(updatedUser));
+            const { token } = state.user;
+            const payload = { ...updatedUser, token };
+            dispatch({ type: "UPDATE_USER", payload: payload });
+            localStorage.setItem("user", JSON.stringify(payload));
             return { success: true };
         } catch (error) {
             dispatch({ type: "UPDATE_FAILURE", payload: error.response.data.message });
             return { success: false, message: error.response.data.message };
         }
     };
+
+    const changePassword = async (password, token) => {
+        try {
+            const response = await axiosInstance.put("http://localhost:8000/api/v1/users/change-password", {token, password});
+            return { success: true, message: response.data.message };
+        } catch (error) {
+            return { success: false, message: error.response.data.message };
+        }
+    }
+
+    const sendTokenPassword = async (email, username) => {
+
+        try {
+            const response = await axiosInstance.post("http://localhost:8000/api/v1/users/send-token-password", { email, username });
+            return { success: true, message: response.data.message };
+        } catch (error) {
+            return { success: false, message: error.response.data.message };
+        }
+    }
 
     const logout = () => {
         console.log("Iniciando proceso de logout...");
@@ -234,7 +255,9 @@ export const GlobalProvider = ({ children }) => {
                 register,
                 updateUser,
                 logout,
-                fetchUserLists
+                fetchUserLists,
+                sendTokenPassword,
+                changePassword,
             }}
         >
             {children}
