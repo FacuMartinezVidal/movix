@@ -20,9 +20,6 @@ export const GlobalProvider = ({ children }) => {
         if (state.user && state.user.token) {
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${state.user.token}`;
             fetchUserLists();
-        } else {
-            localStorage.removeItem("token");
-            delete axiosInstance.defaults.headers.common['Authorization'];
         }
     }, [state.user]);
 
