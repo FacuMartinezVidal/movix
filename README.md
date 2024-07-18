@@ -7,6 +7,7 @@ Movix es una aplicación de gestión de listas de películas que permite a los u
 - Registro e inicio de sesión de usuarios.
 - Añadir películas a listas de favoritos, vistas y por ver.
 - Actualizar y eliminar películas de las listas.
+- Interfaz responsive para una experiencia óptima en diferentes dispositivos
 - Editar perfil de usuario.
 
 ## Tecnologías Utilizadas
@@ -15,6 +16,7 @@ Movix es una aplicación de gestión de listas de películas que permite a los u
 - **React Router**: Biblioteca para el manejo de rutas en aplicaciones React.
 - **Axios**: Cliente HTTP basado en promesas para realizar solicitudes a la API.
 - **Context API y useReducer**: Para la gestión del estado global de la aplicación.
+- **API externa**: Conexión a The Movie Database (TMDB) para la consulta de películas
 - **Sass**: Preprocesador de CSS para estilos más dinámicos y organizados.
 - **Day.js**: Biblioteca de JavaScript para manipulación y formateo de fechas.
 - **FontAwesome**: Biblioteca de iconos vectoriales.
