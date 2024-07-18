@@ -13,24 +13,40 @@ const Profile = () => {
     const [isEditingUsername, setIsEditingUsername] = useState(false);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [message, setMessage] = useState("");
+    const [isTokenValid, setIsTokenValid] = useState(true);
     const navigate = useNavigate();
 
     const handlePassword = async (e) => {
         e.preventDefault();
 
         if (password && token) {
-            await changePassword(password, token);
+            const response = await changePassword(password, token);
+            if (response.success) {
+                setIsEditingPassword(false);
+                setMessage("Password changed successfully");
+                setIsTokenValid(true); // Reset token validity
+            } else {
+                setIsTokenValid(false);
+                setMessage("Invalid token, please try again.");
+            }
+        } else {
+            setMessage("Please enter a valid token and password.");
         }
-        setIsEditingPassword(false);
-        setMessage(message);
     };
 
     const handleUsername = async (e) => {
         e.preventDefault();
-        const updatedUser = { ...user,email: user.email, username };
+        const updatedUser = { ...user, email: user.email, username };
         await updateUser(updatedUser);
         setIsEditingUsername(false);
     }
+
+    const handleChangePasswordClick = async () => {
+        setIsEditingPassword(true);
+        setIsTokenValid(true); // Reset token validity
+        setMessage(""); // Clear previous messages
+        await sendTokenPassword(user.email, user.username);
+    };
 
     return (
         <div className="profilePage">
@@ -76,7 +92,7 @@ const Profile = () => {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="New Passowrd"
+                                    placeholder="New Password"
                                 />
                                 <input
                                     type="text"
@@ -93,15 +109,12 @@ const Profile = () => {
                         ) : (
                             <div className="profile-field">
                                 <span>********</span>
-                                <button className="edit-button" onClick={async () => {
-                                    setIsEditingPassword(true);
-                                    await sendTokenPassword(user.email, user.username);
-                                }}>Change</button>
+                                <button className="edit-button" onClick={handleChangePasswordClick}>Change</button>
                             </div>
                         )}
                     </div>
 
-                    <button onClick={() => {navigate("/")}} className="finalize-button" type="submit">Finish</button>
+                    <button onClick={() => { navigate("/") }} className="finalize-button" type="submit">Finish</button>
                     {message && <p className="message">{message}</p>}
                 </div>
             </ContentWrapper>
